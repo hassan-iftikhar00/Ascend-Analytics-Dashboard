@@ -109,7 +109,7 @@ const COLUMNS = [
     header: "Claim ID",
     size: 120,
     cell: ({ getValue }) =>
-      getValue() || <span className="text-gray-300">—</span>,
+      getValue() || <span className="text-gray-300">-</span>,
   },
 ];
 

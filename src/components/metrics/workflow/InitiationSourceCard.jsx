@@ -11,7 +11,7 @@ export default function InitiationSourceCard() {
 
   return (
     <MetricCard
-      title="M8 — Initiation Source"
+      title="M8 - Initiation Source"
       subtitle="Bot vs. Human call origination"
       loading={isLoading}
       error={error}

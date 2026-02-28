@@ -13,7 +13,7 @@ export default function ReattemptFunnelCard() {
 
   return (
     <MetricCard
-      title="M10 — Reattempt Outcome Funnel"
+      title="M10 - Reattempt Outcome Funnel"
       subtitle="Drop-off through attempt stages"
       loading={isLoading}
       error={error}

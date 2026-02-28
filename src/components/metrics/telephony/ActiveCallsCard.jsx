@@ -16,8 +16,8 @@ export default function ActiveCallsCard() {
 
   return (
     <MetricCard
-      title="M5 — Active Calls (Real-Time)"
-      subtitle="Live call count with capacity gauge — refreshes every 30s"
+      title="M5 - Active Calls (Real-Time)"
+      subtitle="Live call count with capacity gauge - refreshes every 30s"
       loading={isLoading}
       error={error}
       actions={

@@ -17,7 +17,7 @@ export default function DropRateCard() {
     <div className="flex flex-col gap-4">
       <KpiCard
         title="Call Drop Rate"
-        value={data ? `${data.overall}%` : "—"}
+        value={data ? `${data.overall}%` : "-"}
         subtitle="Overall across all insurances"
         trend={data?.trend ? Number(data.trend) : undefined}
         icon={RiSignalWifiOffLine}
@@ -30,7 +30,7 @@ export default function DropRateCard() {
       />
 
       <MetricCard
-        title="M3 — Drop Rate by Insurance"
+        title="M3 - Drop Rate by Insurance"
         subtitle="Top 8 insurances by drop rate %"
         loading={isLoading}
         error={error}

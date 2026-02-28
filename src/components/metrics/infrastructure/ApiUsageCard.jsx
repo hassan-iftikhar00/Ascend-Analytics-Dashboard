@@ -12,7 +12,7 @@ export default function ApiUsageCard() {
 
   return (
     <MetricCard
-      title="M15 — Transcription API Usage"
+      title="M15 - Transcription API Usage"
       subtitle="Daily API calls by vendor"
       loading={isLoading}
       error={error}

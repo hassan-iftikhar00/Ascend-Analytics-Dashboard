@@ -17,7 +17,7 @@ export default function FirstAttemptCard() {
 
   return (
     <MetricCard
-      title="M11 — First Attempt Success Rate"
+      title="M11 - First Attempt Success Rate"
       subtitle="Claims resolved on the first IVR call"
       loading={isLoading}
       error={error}
@@ -34,7 +34,7 @@ export default function FirstAttemptCard() {
           />
           <div>
             <p className="text-2xl font-bold text-gray-900">
-              {data ? `${data.current}%` : "—"}
+              {data ? `${data.current}%` : "-"}
             </p>
             {data?.trend != null && <TrendBadge value={Number(data.trend)} />}
           </div>

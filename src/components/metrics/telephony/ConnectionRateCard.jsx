@@ -33,7 +33,7 @@ export default function ConnectionRateCard() {
             Successful Connection Rate
           </p>
           <p className="text-2xl font-bold text-gray-900">
-            {data ? `${data.current}%` : "—"}
+            {data ? `${data.current}%` : "-"}
           </p>
           <p className="text-xs text-gray-400 mt-1">
             {data
@@ -45,7 +45,7 @@ export default function ConnectionRateCard() {
 
       {/* Trend */}
       <MetricCard
-        title="M2 — Connection Rate Trend"
+        title="M2 - Connection Rate Trend"
         subtitle="Daily connection success %"
         loading={isLoading}
         error={error}

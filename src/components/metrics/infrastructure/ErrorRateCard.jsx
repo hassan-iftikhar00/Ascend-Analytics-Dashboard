@@ -30,7 +30,7 @@ export default function ErrorRateCard() {
     <div className="flex flex-col gap-4">
       <KpiCard
         title="Global Error Rate"
-        value={data ? `${data.current}%` : "—"}
+        value={data ? `${data.current}%` : "-"}
         subtitle={
           data ? `${formatNumber(data.totalErrors)} total errors` : undefined
         }
@@ -41,7 +41,7 @@ export default function ErrorRateCard() {
       />
 
       <MetricCard
-        title="M17 — Error Rate Trend & Breakdown"
+        title="M17 - Error Rate Trend & Breakdown"
         subtitle="Error rate over time + category distribution"
         loading={isLoading}
         error={error}

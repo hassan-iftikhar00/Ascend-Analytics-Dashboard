@@ -22,7 +22,7 @@ export default function TotalCallsCard() {
       {/* KPI header */}
       <KpiCard
         title="Total Calls Initiated"
-        value={data ? formatNumber(data.total) : "—"}
+        value={data ? formatNumber(data.total) : "-"}
         subtitle={data ? `${formatNumber(data.avgDaily)} avg/day` : undefined}
         trend={data?.trend ? Number(data.trend) : undefined}
         icon={RiPhoneLine}
@@ -31,7 +31,7 @@ export default function TotalCallsCard() {
 
       {/* Trend chart */}
       <MetricCard
-        title="M1 — Call Volume Trend"
+        title="M1 - Call Volume Trend"
         subtitle="Daily total calls over selected period"
         loading={isLoading}
         error={error}

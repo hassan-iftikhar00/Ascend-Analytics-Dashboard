@@ -20,8 +20,8 @@ export default function TranscriptionQueueCard() {
 
   return (
     <MetricCard
-      title="M13 — Transcription Queue Length"
-      subtitle="Items pending processing — refreshes every 30s"
+      title="M13 - Transcription Queue Length"
+      subtitle="Items pending processing - refreshes every 30s"
       loading={isLoading}
       error={error}
       actions={
@@ -38,13 +38,13 @@ export default function TranscriptionQueueCard() {
             <p
               className={`text-3xl font-bold ${alerting ? "text-red-600" : "text-gray-900"}`}
             >
-              {data?.current ?? "—"}
+              {data?.current ?? "-"}
             </p>
             <p className="text-xs text-gray-400">items in queue</p>
           </div>
           <div>
             <p className="text-lg font-semibold text-gray-800">
-              {data?.avgWaitTime ?? "—"}s
+              {data?.avgWaitTime ?? "-"}s
             </p>
             <p className="text-xs text-gray-400">avg wait time</p>
           </div>

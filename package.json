@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently -n API,VITE -c blue,green \"node --watch server/index.js\" \"vite\"",
+    "dev": "concurrently -n API,VITE -c blue,green \"dotnet watch run --project api\" \"vite\"",
     "dev:frontend": "vite",
-    "dev:backend": "node --watch server/index.js",
+    "dev:backend": "dotnet watch run --project api",
     "build": "vite build",
+    "build:api": "dotnet publish api -c Release -o dist/api",
     "lint": "eslint .",
     "preview": "vite preview"
   },

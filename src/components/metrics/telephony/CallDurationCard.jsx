@@ -19,7 +19,7 @@ export default function CallDurationCard() {
 
   return (
     <MetricCard
-      title="M6 — Call Duration Analysis"
+      title="M6 - Call Duration Analysis"
       subtitle="Duration distribution with P90/P95 indicators"
       loading={isLoading}
       error={error}

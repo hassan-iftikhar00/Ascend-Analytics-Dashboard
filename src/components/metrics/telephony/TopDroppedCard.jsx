@@ -14,7 +14,7 @@ export default function TopDroppedCard() {
 
   return (
     <MetricCard
-      title="M7 — Top Dropped Insurances"
+      title="M7 - Top Dropped Insurances"
       subtitle="Insurances with highest call drop counts"
       loading={isLoading}
       error={error}

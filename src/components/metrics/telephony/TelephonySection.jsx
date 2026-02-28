@@ -14,7 +14,7 @@ export default function TelephonySection() {
         I. Critical Telephony &amp; Success KPIs
       </h3>
 
-      {/* Row 1: KPI summary cards — 3 columns */}
+      {/* Row 1: KPI summary cards - 3 columns */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <ErrorBoundary>
           <TotalCallsCard />

@@ -11,7 +11,7 @@ export default function TranscriptionLatencyCard() {
 
   return (
     <MetricCard
-      title="M14 — Avg Transcription Latency"
+      title="M14 - Avg Transcription Latency"
       subtitle="P90 latency by vendor (seconds)"
       loading={isLoading}
       error={error}
@@ -22,7 +22,7 @@ export default function TranscriptionLatencyCard() {
           <span
             className={`text-2xl font-bold ${p90Warning ? "text-red-600" : "text-gray-900"}`}
           >
-            {overallP90 ?? "—"}s
+            {overallP90 ?? "-"}s
           </span>
           <span className="text-xs text-gray-400">overall P90</span>
           {p90Warning && (
@@ -32,7 +32,7 @@ export default function TranscriptionLatencyCard() {
           )}
         </div>
 
-        {/* Vendor breakdown — custom box-plot-like bars */}
+        {/* Vendor breakdown - custom box-plot-like bars */}
         <div className="space-y-3">
           {vendors.map((v) => {
             const maxScale = 8;

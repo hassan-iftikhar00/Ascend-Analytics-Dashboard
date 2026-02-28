@@ -1,5 +1,5 @@
 /**
- * Operations API — Call logs data fetcher
+ * Operations API - Call logs data fetcher
  * Transforms API response to match the column keys expected by OperationsTable
  */
 import { USE_MOCK, apiFetch, buildFilterParams } from "./api";
@@ -39,7 +39,7 @@ function formatTimestamp(callDate, callInTime) {
     }
   }
   if (callDate) return new Date(callDate).toLocaleDateString("en-US");
-  return "—";
+  return "-";
 }
 
 function transformRow(row) {
@@ -47,9 +47,9 @@ function transformRow(row) {
     id: `CALL-${String(row.CallID).padStart(7, "0")}`,
     timestamp: row.CallInTime || row.CallDate,
     timestampFormatted: formatTimestamp(row.CallDate, row.CallInTime),
-    insurance: row.Insurance || "—",
-    practice: row.Practice || "—",
-    dnis: row.DNIS || "—",
+    insurance: row.Insurance || "-",
+    practice: row.Practice || "-",
+    dnis: row.DNIS || "-",
     callType: "Outbound",
     source: "Bot",
     status:
@@ -58,8 +58,8 @@ function transformRow(row) {
       row.Status ||
       "Unknown",
     duration: 0,
-    durationFormatted: "—",
-    lastStep: row.StatusDescription || "—",
+    durationFormatted: "-",
+    lastStep: row.StatusDescription || "-",
     attempts: row.NoOfClaims || 1,
     errors:
       row.Status === "F" || row.Status === "E" || row.Status === "G" ? 1 : 0,

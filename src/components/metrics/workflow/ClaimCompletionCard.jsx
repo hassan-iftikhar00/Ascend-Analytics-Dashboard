@@ -18,7 +18,7 @@ export default function ClaimCompletionCard() {
 
   return (
     <MetricCard
-      title="M9 — Claim Status Completion Rate"
+      title="M9 - Claim Status Completion Rate"
       subtitle="End-to-end claim query success %"
       loading={isLoading}
       error={error}
@@ -36,7 +36,7 @@ export default function ClaimCompletionCard() {
           />
           <div>
             <p className="text-2xl font-bold text-gray-900">
-              {data ? `${data.current}%` : "—"}
+              {data ? `${data.current}%` : "-"}
             </p>
             {data && (
               <p className="text-xs text-gray-400 mt-1">

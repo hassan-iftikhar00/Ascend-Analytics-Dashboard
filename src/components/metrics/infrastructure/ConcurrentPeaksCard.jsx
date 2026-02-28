@@ -15,7 +15,7 @@ export default function ConcurrentPeaksCard() {
 
   return (
     <MetricCard
-      title="M16 — Concurrent Peak Monitoring"
+      title="M16 - Concurrent Peak Monitoring"
       subtitle={
         data
           ? `Peak: ${formatNumber(data.peakValue)} at ${data.peakHour}`

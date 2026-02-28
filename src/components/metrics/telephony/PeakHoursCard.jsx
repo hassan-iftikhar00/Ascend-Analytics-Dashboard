@@ -7,7 +7,7 @@ export default function PeakHoursCard() {
 
   return (
     <MetricCard
-      title="M4 — Peak Calling Hours"
+      title="M4 - Peak Calling Hours"
       subtitle="Call volume by day of week × hour (7AM–8PM)"
       loading={isLoading}
       error={error}

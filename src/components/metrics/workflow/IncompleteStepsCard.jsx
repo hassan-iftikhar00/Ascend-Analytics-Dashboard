@@ -13,7 +13,7 @@ export default function IncompleteStepsCard() {
 
   return (
     <MetricCard
-      title="M12 — Top Incomplete IVR Steps"
+      title="M12 - Top Incomplete IVR Steps"
       subtitle="Steps where callers drop off most frequently"
       loading={isLoading}
       error={error}
