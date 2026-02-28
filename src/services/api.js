@@ -1,11 +1,12 @@
 /**
  * Base API service
- * In mock mode, returns mock data. In production, calls real C#/IIS API.
+ * Connects to Express backend → SQL Server.
+ * Set VITE_USE_MOCK=true in .env.development to fall back to mock data.
  */
 
-const USE_MOCK = true; // Will switch to env var: import.meta.env.VITE_USE_MOCK !== 'false'
+const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "/api";
 
 /**
  * Generic fetch wrapper with error handling

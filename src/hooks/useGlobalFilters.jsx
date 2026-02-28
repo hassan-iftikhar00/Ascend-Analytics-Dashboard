@@ -12,9 +12,9 @@ const FilterContext = createContext(null);
 function getDefaultDateRange() {
   const now = new Date();
   return {
-    from: subHours(now, 24),
+    from: subDays(now, 90),
     to: now,
-    preset: "24h",
+    preset: "90d",
   };
 }
 

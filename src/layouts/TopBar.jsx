@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { RiLiveLine, RiFilter3Line, RiRefreshLine } from "@remixicon/react";
 import { useGlobalFilters } from "../hooks/useGlobalFilters";
+import { useFilterOptions } from "../hooks/useFilterOptions";
 import FilterDropdown from "../components/ui/FilterDropdown";
 import {
   INSURANCES,
@@ -19,6 +20,19 @@ export default function TopBar() {
     resetFilters,
     activeFilterCount,
   } = useGlobalFilters();
+
+  // Dynamic filter options from DB (falls back to constants)
+  const { data: filterOpts } = useFilterOptions();
+  const insuranceOpts = filterOpts?.insurances?.length
+    ? filterOpts.insurances
+    : INSURANCES;
+  const practiceOpts = filterOpts?.practices?.length
+    ? filterOpts.practices
+    : PRACTICES;
+  const dnisOpts = filterOpts?.dnis?.length ? filterOpts.dnis : DNIS_LIST;
+  const callTypeOpts = filterOpts?.callTypes?.length
+    ? filterOpts.callTypes
+    : CALL_TYPES;
 
   // Page title based on route
   const pageTitle = location.pathname.includes("/operations")
@@ -63,25 +77,25 @@ export default function TopBar() {
         {/* Filter dropdowns */}
         <FilterDropdown
           label="Insurance"
-          options={INSURANCES}
+          options={insuranceOpts}
           selected={filters.insurance}
           onChange={(val) => updateFilter("insurance", val)}
         />
         <FilterDropdown
           label="Practice"
-          options={PRACTICES}
+          options={practiceOpts}
           selected={filters.practice}
           onChange={(val) => updateFilter("practice", val)}
         />
         <FilterDropdown
           label="DNIS"
-          options={DNIS_LIST}
+          options={dnisOpts}
           selected={filters.dnis}
           onChange={(val) => updateFilter("dnis", val)}
         />
         <FilterDropdown
           label="Call Type"
-          options={CALL_TYPES}
+          options={callTypeOpts}
           selected={filters.callType}
           onChange={(val) => updateFilter("callType", val)}
         />
