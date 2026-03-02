@@ -7,7 +7,7 @@ using System.Data;
 namespace AscendAPI.Controllers;
 
 /// <summary>
-/// Operations API — Paginated call log table + detail view.
+/// Operations API - Paginated call log table + detail view.
 /// Mirrors the Node.js Express endpoints exactly.
 /// </summary>
 [ApiController]
@@ -125,7 +125,8 @@ public class OperationsController : ControllerBase
 
         string whereSQL = conditions.Count > 0 ? $"WHERE {string.Join(" AND ", conditions)}" : "";
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
 
         // Count
         int total = await conn.ExecuteScalarAsync<int>($@"
@@ -175,7 +176,8 @@ public class OperationsController : ControllerBase
     [HttpGet("detail/{id:int}")]
     public async Task<IActionResult> Detail(int id)
     {
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
 
         var row = await conn.QueryFirstOrDefaultAsync<dynamic>($@"
             SELECT od.ID AS CallID,

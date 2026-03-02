@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { RiLiveLine, RiFilter3Line, RiRefreshLine } from "@remixicon/react";
 import { useGlobalFilters } from "../hooks/useGlobalFilters";
 import { useFilterOptions } from "../hooks/useFilterOptions";
+import { useConnection } from "../hooks/useConnection";
 import FilterDropdown from "../components/ui/FilterDropdown";
 import {
   INSURANCES,
@@ -13,6 +14,7 @@ import {
 
 export default function TopBar() {
   const location = useLocation();
+  const { dbDown } = useConnection();
   const {
     filters,
     updateFilter,
@@ -45,9 +47,25 @@ export default function TopBar() {
     <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 sticky top-0 z-30">
       {/* Left: Live badge + page context */}
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-200 rounded-full">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse-live" />
-          <span className="text-xs font-medium text-green-700">LIVE</span>
+        <div
+          className={`flex items-center gap-2 px-3 py-1.5 border rounded-full transition-colors ${
+            dbDown ? "bg-red-50 border-red-200" : "bg-green-50 border-green-200"
+          }`}
+        >
+          <div
+            className={`w-2 h-2 rounded-full ${
+              dbDown
+                ? "bg-red-500 animate-pulse"
+                : "bg-green-500 animate-pulse-live"
+            }`}
+          />
+          <span
+            className={`text-xs font-medium ${
+              dbDown ? "text-red-700" : "text-green-700"
+            }`}
+          >
+            {dbDown ? "OFFLINE" : "LIVE"}
+          </span>
         </div>
         <span className="text-sm text-gray-400">|</span>
         <span className="text-sm font-medium text-gray-700">{pageTitle}</span>

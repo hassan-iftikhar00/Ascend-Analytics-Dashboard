@@ -2,12 +2,16 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
+import ConnectionAlert from "../components/ConnectionAlert";
 
 export default function RootLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {/* VPN / DB connection alert */}
+      <ConnectionAlert />
+
       {/* Sidebar */}
       <Sidebar
         collapsed={sidebarCollapsed}

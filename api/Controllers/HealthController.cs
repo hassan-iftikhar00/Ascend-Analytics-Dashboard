@@ -16,7 +16,8 @@ public class HealthController : ControllerBase
     {
         try
         {
-            using var conn = _db.CreateConnection();
+            await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+            var conn = tc.Connection;
             var ok = await conn.ExecuteScalarAsync<int>("SELECT 1");
             return Ok(new
             {

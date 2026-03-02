@@ -7,7 +7,7 @@ using System.Data;
 namespace AscendAPI.Controllers;
 
 /// <summary>
-/// Dashboard API — All 17 IVR metrics.
+/// Dashboard API - All 17 IVR metrics.
 /// Mirrors the Node.js Express endpoints exactly so the React frontend works unchanged.
 /// </summary>
 [ApiController]
@@ -28,7 +28,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT CAST(om.CallDate AS DATE) AS callDate,
                    COUNT(od.ID) AS callCount
@@ -72,7 +73,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT CAST(om.CallDate AS DATE) AS callDate,
                    COUNT(od.ID) AS total,
@@ -122,7 +124,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT {FilterHelper.INS_EXPR} AS Insurance,
                    COUNT(od.ID) AS total,
@@ -163,7 +166,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT DATEPART(HOUR, om.CallInTime) AS hour,
                    DATENAME(WEEKDAY, om.CallDate) AS dayOfWeek,
@@ -208,7 +212,8 @@ public class DashboardController : ControllerBase
     [HttpGet("active-calls")]
     public async Task<IActionResult> ActiveCalls()
     {
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
 
         int active = await conn.ExecuteScalarAsync<int>(
             "SELECT COUNT(*) FROM outboundmaster WHERE RTRIM(Status) = 'P'");
@@ -256,7 +261,8 @@ public class DashboardController : ControllerBase
         }
         string cdrWhere = conds.Count > 0 ? $"WHERE {string.Join(" AND ", conds)}" : "";
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT COALESCE(app.Insurance, 'Unknown') AS Insurance,
                    AVG(cdr.Duration) AS avgDuration,
@@ -303,7 +309,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = await conn.QueryAsync<dynamic>($@"
             SELECT TOP 10
                 {FilterHelper.INS_EXPR} AS Insurance,
@@ -343,7 +350,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT RTRIM(od.Status) AS statusCode,
                    COALESCE(ocs.Description, 'Status: ' + RTRIM(od.Status)) AS source,
@@ -380,7 +388,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT RTRIM(od.Status) AS statusCode,
                    COALESCE(ocs.Description, RTRIM(od.Status)) AS ClaimStatus,
@@ -421,7 +430,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = await conn.QueryAsync<dynamic>($@"
             SELECT attempts, COUNT(*) AS batchCount,
                    SUM(succeeded) AS totalSucceeded,
@@ -462,7 +472,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT CAST(om.CallDate AS DATE) AS callDate,
                    COUNT(DISTINCT om.ID) AS total,
@@ -512,7 +523,8 @@ public class DashboardController : ControllerBase
             ? "WHERE RTRIM(od.Status) IN ('I','F','E','G','R')"
             : $"{whereSQL} AND RTRIM(od.Status) IN ('I','F','E','G','R')";
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT RTRIM(od.Status) AS statusCode,
                    COALESCE(ocs.Description, RTRIM(od.Status)) AS step,
@@ -554,7 +566,8 @@ public class DashboardController : ControllerBase
     [HttpGet("transcription-queue")]
     public async Task<IActionResult> TranscriptionQueue()
     {
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
 
         var row = await conn.QueryFirstOrDefaultAsync<dynamic>(@"
             SELECT COUNT(*) AS pending, MIN(CallInTime) AS oldestInQueue
@@ -605,7 +618,8 @@ public class DashboardController : ControllerBase
         }
         string extraWhere = conds.Count > 0 ? $"AND {string.Join(" AND ", conds)}" : "";
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT CAST(om.CallDate AS DATE) AS callDate,
                    COUNT(*) AS [count],
@@ -652,7 +666,8 @@ public class DashboardController : ControllerBase
         }
         string extraWhere = conds.Count > 0 ? $"AND {string.Join(" AND ", conds)}" : "";
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT CAST(om.CallDate AS DATE) AS usageDate,
                    COUNT(*) AS transcribed,
@@ -699,7 +714,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT CAST(om.CallDate AS DATE) AS callDate,
                    DATEPART(HOUR, om.CallInTime) AS hour,
@@ -743,7 +759,8 @@ public class DashboardController : ControllerBase
         var f = FilterHelper.Parse(from, to, insurance, practice, dnis, callType);
         var (whereSQL, p) = FilterHelper.BuildWhereClause(f);
 
-        using var conn = _db.CreateConnection();
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT CAST(om.CallDate AS DATE) AS callDate,
                    COUNT(od.ID) AS total,
@@ -758,7 +775,7 @@ public class DashboardController : ControllerBase
         int totalErrors = rows.Sum(r => (int)r.errors);
         double rate = totalAll > 0 ? Math.Round((double)totalErrors / totalAll * 100, 2) : 0;
 
-        // Breakdown by error type — need second query with separate params
+        // Breakdown by error type - need second query with separate params
         var p2 = FilterHelper.BuildWhereClause(f).Params;
         string breakdownWhere = string.IsNullOrEmpty(whereSQL)
             ? "WHERE RTRIM(od.Status) IN ('F','G','E','R')"
@@ -801,9 +818,11 @@ public class DashboardController : ControllerBase
     [HttpGet("filter-options")]
     public async Task<IActionResult> FilterOptions()
     {
-        using var conn = _db.CreateConnection();
+        // Use a single connection with sequential queries to reduce pool pressure
+        await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
+        var conn = tc.Connection;
 
-        var insTask = conn.QueryAsync<dynamic>($@"
+        var insRows = await conn.QueryAsync<dynamic>($@"
             SELECT TOP 50 {FilterHelper.INS_EXPR} AS val, COUNT(*) AS cnt
             FROM outboundmaster om
             INNER JOIN outboundmaster_detail od ON od.OID = om.ID
@@ -811,28 +830,23 @@ public class DashboardController : ControllerBase
             GROUP BY {FilterHelper.INS_EXPR}
             ORDER BY COUNT(*) DESC");
 
-        // Need separate connections for parallel queries with Dapper
-        using var conn2 = _db.CreateConnection();
-        var practTask = conn2.QueryAsync<dynamic>(@"
+        var practRows = await conn.QueryAsync<dynamic>(@"
             SELECT DISTINCT RTRIM(od.PracticeCode) AS val
             FROM outboundmaster_detail od
             WHERE od.PracticeCode IS NOT NULL AND od.PracticeCode != ''
             ORDER BY val");
 
-        using var conn3 = _db.CreateConnection();
-        var dnisTask = conn3.QueryAsync<dynamic>(@"
+        var dnisRows = await conn.QueryAsync<dynamic>(@"
             SELECT DISTINCT RTRIM(od.IVR_Insurance) AS val
             FROM outboundmaster_detail od
             WHERE od.IVR_Insurance IS NOT NULL AND od.IVR_Insurance != ''
             ORDER BY val");
 
-        await Task.WhenAll(insTask, practTask, dnisTask);
-
         return Ok(new
         {
-            insurances = (await insTask).Select(r => (string?)r.val).Where(v => v != null),
-            practices = (await practTask).Select(r => (string?)r.val).Where(v => v != null),
-            dnis = (await dnisTask).Select(r => (string?)r.val).Where(v => v != null),
+            insurances = insRows.Select(r => (string?)r.val).Where(v => v != null),
+            practices = practRows.Select(r => (string?)r.val).Where(v => v != null),
+            dnis = dnisRows.Select(r => (string?)r.val).Where(v => v != null),
         });
     }
 }

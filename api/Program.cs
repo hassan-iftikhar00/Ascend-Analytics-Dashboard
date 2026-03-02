@@ -1,4 +1,5 @@
 using AscendAPI.Services;
+using Microsoft.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,27 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+// Global error handler - catch transient SQL errors and return 503
+app.Use(async (ctx, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (SqlException ex) when (ex.Number == 258 || ex.Number == -2 || ex.Number == 53)
+    {
+        // 258 = pool wait timeout, -2 = general timeout, 53 = network path
+        ctx.Response.StatusCode = 503;
+        ctx.Response.ContentType = "application/json";
+        await ctx.Response.WriteAsync(
+            System.Text.Json.JsonSerializer.Serialize(new
+            {
+                error = "Database temporarily unavailable. Please retry.",
+                detail = ex.Message
+            }));
+    }
+});
 
 // Request logging (dev)
 if (app.Environment.IsDevelopment())

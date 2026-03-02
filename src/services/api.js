@@ -22,6 +22,10 @@ export async function apiFetch(endpoint, options = {}) {
   });
 
   if (!response.ok) {
+    // Signal the UI when the DB / backend is unreachable (503)
+    if (response.status === 503) {
+      window.dispatchEvent(new CustomEvent("db-unavailable"));
+    }
     throw new Error(`API Error: ${response.status} ${response.statusText}`);
   }
 

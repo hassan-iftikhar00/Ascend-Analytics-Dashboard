@@ -2,7 +2,7 @@ import { ResponsiveBar } from "@nivo/bar";
 import { nivoTheme } from "../../config/chartTheme";
 
 /**
- * Horizontal bar chart — good for "Top N" rankings
+ * Horizontal bar chart - good for "Top N" rankings
  */
 export default function HorizontalBarChart({
   data,
