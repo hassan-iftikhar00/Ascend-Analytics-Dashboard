@@ -7,7 +7,15 @@ import { formatNumber } from "../../../utils/formatters";
 export default function InitiationSourceCard() {
   const { data, isLoading, error } = useInitiationSource();
 
-  const donutData = data?.data ?? [];
+  // Handle both API response (sources) and mock response (data)
+  const rawSources = data?.sources ?? data?.data ?? [];
+
+  const donutData = rawSources.map((d) => ({
+    id: d.id ?? d.source ?? d.label,
+    label: d.label ?? d.source ?? d.id,
+    value: d.value ?? d.count,
+    percent: d.percent ?? d.pct,
+  }));
 
   return (
     <MetricCard

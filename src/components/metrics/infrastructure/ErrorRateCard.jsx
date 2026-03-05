@@ -19,8 +19,8 @@ export default function ErrorRateCard() {
 
   const donutData =
     data?.byCategory?.map((c) => ({
-      id: c.category,
-      label: c.category,
+      id: c.type ?? c.category,
+      label: c.type ?? c.category,
       value: c.count,
     })) ?? [];
 

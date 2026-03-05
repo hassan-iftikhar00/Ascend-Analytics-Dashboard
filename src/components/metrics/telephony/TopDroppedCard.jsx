@@ -6,10 +6,13 @@ import { THRESHOLDS, COLORS } from "../../../config/constants";
 export default function TopDroppedCard() {
   const { data, isLoading, error } = useTopDropped();
 
-  const barData = (data ?? []).map((d) => ({
-    label: d.insurance,
-    "Dropped Calls": d.droppedCalls,
-    "Drop Rate %": d.dropRate,
+  // Handle both API response (might be wrapped in 'insurances') and direct array (mock)
+  const rawData = data?.insurances ?? data ?? [];
+
+  const barData = rawData.map((d) => ({
+    label: d.insurance ?? d.insuranceName ?? d.name,
+    "Dropped Calls": d.droppedCalls ?? d.dropped ?? d.count,
+    "Drop Rate %": d.dropRate ?? d.rate,
   }));
 
   return (

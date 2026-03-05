@@ -7,7 +7,8 @@ import { formatNumber } from "../../../utils/formatters";
 export default function ApiUsageCard() {
   const { data, isLoading, error } = useApiUsage();
 
-  const chartData = data?.data ?? [];
+  // Handle both API response (usage) and mock response (data)
+  const chartData = data?.usage ?? data?.data ?? [];
   const vendors = data?.vendors ?? [];
 
   return (

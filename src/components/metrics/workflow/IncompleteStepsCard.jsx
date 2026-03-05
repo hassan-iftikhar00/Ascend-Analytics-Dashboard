@@ -8,7 +8,7 @@ export default function IncompleteStepsCard() {
 
   const barData = (data ?? []).slice(0, 8).map((d) => ({
     label: d.step,
-    Incomplete: d.incompleteCount,
+    Incomplete: d.count ?? d.incompleteCount,
   }));
 
   return (
@@ -35,7 +35,7 @@ export default function IncompleteStepsCard() {
                 <p className="font-semibold text-gray-800">{d.label}</p>
                 <p className="text-gray-500">
                   {d.Incomplete.toLocaleString()} incomplete
-                  {src ? ` (${src.incompletePercent}%)` : ""}
+                  {src ? ` (${src.pct ?? src.incompletePercent}%)` : ""}
                 </p>
               </div>
             );

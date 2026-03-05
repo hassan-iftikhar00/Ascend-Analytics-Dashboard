@@ -4,9 +4,9 @@
  * Set VITE_USE_MOCK=true in .env.development to fall back to mock data.
  */
 
-const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true";
+const USE_MOCK = true; // Will switch to env var: import.meta.env.VITE_USE_MOCK !== 'false'
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "/api";
+const API_BASE = import.meta.env.VITE_API_BASE || "/api";
 
 /**
  * Generic fetch wrapper with error handling
