@@ -113,7 +113,7 @@ public class DashboardController : ControllerBase
         });
     }
 
-    // ═══════════════════════════════════════════════════════
+   // ═══════════════════════════════════════════════════════
     // M3: Call Drop / Fail Rate
     // GET /api/dashboard/drop-rate
     // ═══════════════════════════════════════════════════════
@@ -126,15 +126,17 @@ public class DashboardController : ControllerBase
 
         await using var tc = await _db.GetThrottledConnectionAsync(HttpContext.RequestAborted);
         var conn = tc.Connection;
+        
+        // FIX LAGA DIYA HAI: RTRIM(od.Status) IN ('F', 'D') kar diya gaya hai (SELECT aur ORDER BY dono jagah)
         var rows = (await conn.QueryAsync<dynamic>($@"
             SELECT {FilterHelper.INS_EXPR} AS Insurance,
                    COUNT(od.ID) AS total,
-                   SUM(CASE WHEN RTRIM(od.Status) = 'F' THEN 1 ELSE 0 END) AS dropped
+                   SUM(CASE WHEN RTRIM(od.Status) IN ('F', 'D') THEN 1 ELSE 0 END) AS dropped
             FROM outboundmaster om
             INNER JOIN outboundmaster_detail od ON od.OID = om.ID
             {whereSQL}
             GROUP BY {FilterHelper.INS_EXPR}
-            ORDER BY SUM(CASE WHEN RTRIM(od.Status) = 'F' THEN 1 ELSE 0 END) DESC", p)).AsList();
+            ORDER BY SUM(CASE WHEN RTRIM(od.Status) IN ('F', 'D') THEN 1 ELSE 0 END) DESC", p)).AsList();
 
         int totalAll = rows.Sum(r => (int)r.total);
         int totalDropped = rows.Sum(r => (int)r.dropped);

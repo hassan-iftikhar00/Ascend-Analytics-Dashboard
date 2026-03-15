@@ -8,6 +8,7 @@ import {
 
 /**
  * Get date range from preset string
+ * UPDATED: Added 180d and 365d support
  */
 export function getDateRangeFromPreset(preset) {
   const now = new Date();
@@ -20,7 +21,12 @@ export function getDateRangeFromPreset(preset) {
       return { from: subDays(now, 30), to: now };
     case "90d":
       return { from: subDays(now, 90), to: now };
+    case "180d": // 👈 Naya Case: Last 6 Months
+      return { from: subDays(now, 180), to: now };
+    case "365d": // 👈 Naya Case: Last 1 Year
+      return { from: subDays(now, 365), to: now };
     default:
+      // Agar kuch samajh na aaye toh 24 hours default
       return { from: subHours(now, 24), to: now };
   }
 }

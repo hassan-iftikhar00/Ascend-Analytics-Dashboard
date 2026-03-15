@@ -26,8 +26,12 @@ public static class FilterHelper
     {
         return new FilterParams
         {
-            From = string.IsNullOrWhiteSpace(from) ? null : DateTime.Parse(from),
-            To = string.IsNullOrWhiteSpace(to) ? null : DateTime.Parse(to),
+            // FIX LAGA DIYA HAI: .Date lagane se Time aur Timezone ka asar khatam ho jayega (Start of Day: 00:00:00)
+            From = string.IsNullOrWhiteSpace(from) ? null : DateTime.Parse(from).Date,
+            
+            // FIX LAGA DIYA HAI: .Date lekar usme 1 din add kiya aur 1 second minus kiya, taake End of Day (23:59:59) ban jaye
+            To = string.IsNullOrWhiteSpace(to) ? null : DateTime.Parse(to).Date.AddDays(1).AddSeconds(-1),
+            
             Insurance = SplitCsv(insurance),
             Practice = SplitCsv(practice),
             Dnis = SplitCsv(dnis),

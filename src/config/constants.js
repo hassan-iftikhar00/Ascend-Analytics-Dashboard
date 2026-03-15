@@ -136,10 +136,13 @@ export const IVR_STEPS = [
 ];
 
 // ── Date range presets ──
+// FIX: Added 6 Months and 1 Year to cover older data (November/October 2025)
 export const DATE_PRESETS = [
   { label: "Last 24 Hours", value: "24h" },
   { label: "Last 7 Days", value: "7d" },
   { label: "Last 30 Days", value: "30d" },
   { label: "Last 90 Days", value: "90d" },
+  { label: "Last 6 Months", value: "180d" },
+  { label: "Last 1 Year", value: "365d" },
   { label: "Custom", value: "custom" },
 ];
